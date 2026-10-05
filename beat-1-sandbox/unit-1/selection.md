@@ -15,22 +15,42 @@ wrong label is not graded.
 
 **Issue link**
 
-[The individual Path Review issue page. A link to the repository or the issue list
-does not satisfy this field.]
+https://github.com/codepath/pathreview-ai301-fa26-s3/issues/11
 
 **Verdict output**
 
-[Your skill's live-mode output for this issue, pasted verbatim and ending with the
-fenced JSON verdict block. A summary does not satisfy this field.]
+Verdict: accept. Issue #11 passes all required checks.
 
-**The verdict must record `accept` for this issue.** Choose an issue your own skill
-accepts. If your skill rejects every candidate you try, that is a signal about your
-rubric rather than about the issues: revise it and re-run — retries are unlimited and a
-partial re-run costs about $0.20 — or run the skill on different candidates. Output
-recording `reject` for the issue you chose earns no credit for this field.
+- Maintainer still around: pass — Aburke225 human commits on 2026-09-16
+- Maintainers merge PRs: pass — ascherj merged PR #176 on 2026-07-18 (within 90 days of 2026-10-04)
+- Repo not archived: pass — archived: no
+- Repo still ships / moves: pass — last push 2026-09-16 (within 180 days)
+- Scope is one piece of work: pass — one docs section in docs/ARCHITECTURE.md
+- Size fits a newcomer: pass — ~2–3 hours; good first issue / tier-1
+- Nobody has it: pass — no assignee, no linked PR; classmate comments ignored per Path Review house rule
+- AI policy allows assistive use: pass — no ban stated (silence passes)
+- Maintainers answer issues (preferred): unclear — no maintainer reply sample on this thread
+- People actually use it (preferred): fail — ~6 stars
+- Labeled as newcomer-friendly (preferred): pass — good first issue
 
-```
-paste the output here, including the closing JSON block
+```json
+{
+  "item": "https://github.com/codepath/pathreview-ai301-fa26-s3/issues/11",
+  "checks": [
+    {"name": "Maintainer still around", "grade": "pass", "evidence": "Human commits by Aburke225 on 2026-09-16 (within 90 days of 2026-10-04)"},
+    {"name": "Maintainers merge PRs", "grade": "pass", "evidence": "ascherj merged PR #176 on 2026-07-18 (within 90 days)"},
+    {"name": "Repo not archived", "grade": "pass", "evidence": "archived: no"},
+    {"name": "Repo still ships / moves", "grade": "pass", "evidence": "No release, but last push 2026-09-16 (within 180 days)"},
+    {"name": "Scope is one piece of work", "grade": "pass", "evidence": "One docs section: hybrid retrieval scoring formula, default weights, and an example in docs/ARCHITECTURE.md"},
+    {"name": "Size fits a newcomer", "grade": "pass", "evidence": "Estimated 2-3 hours; labels include good first issue, docs, tier-1"},
+    {"name": "Nobody has it", "grade": "pass", "evidence": "Assignees: none; linked PRs: none. Classmate investigation comments ignored per Path Review house rule"},
+    {"name": "AI policy allows assistive use", "grade": "pass", "evidence": "No AI ban stated; silence passes"},
+    {"name": "Maintainers answer issues", "grade": "unclear", "evidence": "No maintainer first-response sample shown for this thread (preferred; does not flip verdict)"},
+    {"name": "People actually use it", "grade": "fail", "evidence": "~6 stars (preferred; under 100)"},
+    {"name": "Labeled as newcomer-friendly", "grade": "pass", "evidence": "Labels include good first issue and tier-1"}
+  ],
+  "verdict": "accept"
+}
 ```
 
 ---
@@ -41,28 +61,25 @@ Quote source text directly in each field below. Paraphrase does not satisfy them
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+1. First full run with an early rubric (no AI-policy check; stricter scope/size): `agreement: 16/20 scored items (bar: 18/20: below the bar; category floor unmet: no match in policy)`. Misses: issue-01, issue-12, issue-15, issue-19.
+2. Revised rubric (added AI-policy check; loosened docs/size; tightened stale design + abandoned PRs). Cheap `--only issue-01,issue-12,issue-15,issue-19` then `--only issue-01,issue-19` until those matched gold.
+3. Confirming full run written to `eval-run.txt`: `agreement: 18/20 scored items (bar: 18/20: PASS)` with `categories: claimed 4/4 clear-accept 8/8 dead-repo 3/3 policy 1/1 scope 2/4`. Remaining disagreements: issue-15 and issue-20 (gold reject, graded accept).
 
 **Issue analysis**
 
-[One scored issue, identified by id (`issue-01` through `issue-20`; the `calib-`
-issues are not scored). State your rubric's decision, the gold label, and the
-reasoning that produced your rubric's result.]
+issue-12. Gold label: reject. Rubric's decision: reject. Reasoning: the issue looked good on all other fronts, but BookWyrm does not accept AI-generated code or documentation. The `AI policy allows assistive use` should fail when repo disallows AI, so the verdict is reject even though every other check would pass. 
 
 **Check rationale**
 
-[One check from the `rubric.md` uploaded to `tools/issue-select/`, quoted as it is
-currently written, with the reasoning behind its current form.]
+From `tools/issue-select/rubric.md`:
+
+> | AI policy allows assistive use | `contribution policy` line under Repo facts (or CONTRIBUTING.md / AI policy files on the repo). | Pass if the policy is silent, or only requires disclosure / personal understanding / testing / human review. Fail only on an outright ban of AI-generated code or docs (e.g. "we do not accept AI-generated contributions"). | required |
+
+I added this after the first full run scored `policy 0/1`.. Without it, a “perfect” first issue in a repo that bans AI work would still be accepted. Check only blocks hard bans, and treats silence as a pass.
 
 **Trade-offs**
 
-[What the quoted check gives up. Any one of these is a complete answer: an issue whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
-
+This check is what turns issue-12 from a wrong accept to a correct reject. The trade-off is intentional narrowness: repos that require disclosure still pass and repos that discourage ai contributions might still pass. 
 ---
 
 ## Selection rationale
@@ -73,12 +90,9 @@ This is also the basis for the claim comment you write in Unit 2.
 
 **Selection rationale**
 
-[Answer all three:
-
-1. The issue's fit to your interests and to the time available.
-2. What the verdict identified correctly, and what you weighed that the rubric could
-   not.
-3. The anticipated difficulty in claiming it.]
+1. Fit / time: #11 is a small docs change in one file (`docs/ARCHITECTURE.md`), labeled good first issue / tier-1. It will probably  take about 2-3 hours, a few hours to understand the task & a few hours to complete the task. This is a task that is completable without having to understand the entire system's architecture.
+2. What the verdict got right / what I weighed: The skill correctly saw limited scope/ good for a first issue, no assignee/linked PR, and an accept under Path Review house rules. I would prefer to write code for my first task, but I am ok with contributing documentation before I get more familiar with the repo. 
+3. Claiming difficulty: The hardest part will probably be writing a clear section that matches the actual formula and weights in rag/retriever/hybrid.py
 
 ---
 
